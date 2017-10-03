@@ -1,0 +1,1 @@
+keytool -v -importkeystore -srckeystore server-crt.pkcs12 -srcstoretype PKCS12 -destkeystore keystore.ks -deststoretype JKS
