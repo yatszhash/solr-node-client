@@ -1,0 +1,15 @@
+{
+    "responseHeader": {
+        "status": 0,
+        "QTime": 1,
+        "params": {
+            "q": "id:missing",
+            "wt": "json"
+        }
+    },
+    "response": {
+        "numFound": 0,
+        "start": 0,
+        "docs": []
+    }
+}

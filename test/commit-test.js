@@ -19,6 +19,8 @@ describe('Client',function(){
 	describe('#commit(callback)',function(){
 		it('should commit',function(done){
 			client.commit(function(err,data){
+				console.log(err);
+				console.log(data);
 				sassert.ok(err,data);
 				done();
 			});
