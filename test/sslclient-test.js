@@ -70,11 +70,16 @@ describe('SSLClient', function () {
         });
     });
 
+
+
+
     describe('search ssl', function () {
+
+        let tconfig = { client: Object.assign({}, config.client) };
+        tconfig.client.port = 8984;
+        tconfig.client.ssl = { key: clientoptions.key, cert: clientoptions.cert, ca: clientoptions.ca };
+
         it('successfully search with ssl', function (done) {
-            let tconfig = { client: Object.assign({}, config.client) };
-            tconfig.client.port = 8984;
-            tconfig.client.ssl = { key: clientoptions.key, cert: clientoptions.cert, ca: clientoptions.ca };
             let client = solr.createClient(tconfig.client);
             client.search('q=id:missing', function (err, data) {
                 sassert.ok(err, data);
@@ -82,11 +87,24 @@ describe('SSLClient', function () {
                 done();
             });
         });
-        it('fail search without ssl', function (done) {
-            let tconfig = { client: Object.assign({}, config.client) };
-            tconfig.client.port = 8984;
-            //config.client.ssl = { key: clientoptions.key,  cert: clientoptions.cert,  ca:clientoptions.ca };
+
+        it('successfully query search with ssl', function (done) {    
+
             let client = solr.createClient(tconfig.client);
+            var solrQ = client.createQuery()
+                    .q("id:missing");
+            client.search(solrQ, function (err, data) {
+                sassert.ok(err, data);
+                assert.deepEqual({ q: 'id:missing', wt: 'json' }, data.responseHeader.params);
+                done();
+            });
+        });
+
+        it('fail search without ssl', function (done) {
+            let sconfig = { client: Object.assign({}, config.client) };
+            sconfig.client.port = 8984;
+            //config.client.ssl = { key: clientoptions.key,  cert: clientoptions.cert,  ca:clientoptions.ca };
+            let client = solr.createClient(sconfig.client);
             client.search('q=id:missing', function (err, data) {
                 assert.ok(err);
                 assert.isNull(data);
